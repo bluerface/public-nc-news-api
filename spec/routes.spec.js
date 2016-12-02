@@ -58,4 +58,21 @@ describe('/api ROUTES', function () {
         });
     });
   });
+
+  describe('GET /api/articles', function () {
+    it('will return 200 with an array of all the articles', function () {
+      request(ROOT)
+        .get('/articles')
+        .expect(200)
+        .end(function (err, res) {
+          if (err) throw err;
+          expect(res.body.articles).to.be.an('array');
+          res.body.articles.forEach((article) => {
+            expect(article).to.have.ownProperty('title');
+            expect(article).to.have.ownProperty('body');
+            expect(article).to.have.ownProperty('belongs_to');
+          });
+        });
+    });
+  });
 });
