@@ -17,9 +17,15 @@ function getAllArticles (req, res, next) {
 }
 
 function getArticleComments (req, res, next) {
-  Comments.find({belongs_to: req.params.article_id}, function (err, comments) {
+  Articles.findById(req.params.article_id, function (err, articles) {
     if (err) return next(err);
-    res.json({comments: comments});
+    if (!articles) {
+      return res.status(404).json({reason: 'article does not exist'});
+    }
+    Comments.find({belongs_to: req.params.article_id}, function (err, comments) {
+      if (err) return next(err);
+      res.json({comments: comments});
+    });
   });
 }
 

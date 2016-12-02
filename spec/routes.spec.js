@@ -19,6 +19,8 @@ describe('/api ROUTES', function () {
     });
     saveTestData(function (ids) {
       usefulIds = ids;
+      usefulIds.nonexistent_id = '584191edb8b7b347f5a8627b';
+      usefulIds.invalid_id = '584191edb8b7b347f5a8627bxxxxxx';
       // maybe add an invalid id and a nonexistent/incorrect id
       done();
     });
@@ -34,10 +36,9 @@ describe('/api ROUTES', function () {
       request(ROOT)
         .get('/')
         .expect(200)
+        .expect({status: 'OK'})
         .end(function (err, res) {
           if (err) throw err;
-          expect(res.statusCode).to.equal(200);
-          expect(res.body.status).to.equal('OK');
           done();
         });
     });
@@ -94,5 +95,17 @@ describe('/api ROUTES', function () {
           done();
         });
     });
+    it('returns 404 (Not Found) for a nonexistent article id', function (done) {
+      request(ROOT)
+        .get(`/articles/${usefulIds.nonexistent_id}/comments`)
+        .expect(404)
+        // .expect({reason: 'article does not exist'})
+        .end(function (err, res) {
+          if (err) throw err;
+          done();
+        });
+    });
+    // it returns 404 (not found) for a nonexistent article id
+    // it returns 400 (bad request) for a invalid article id
   });
 });
