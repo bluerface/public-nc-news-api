@@ -44,9 +44,17 @@ function saveComments (articlesArray, cb) {
   const articleId = articlesArray[0]._id;
   const comment = new models.Comments({body: 'this is a comment', belongs_to: articleId});
   const comment2 = new models.Comments({body: 'this is another comment', belongs_to: articleId, created_by: 'someone'});
-  models.Comments.create([comment, comment2], err => {
+  models.Comments.create([comment, comment2], (err) => {
     if (err) cb(err);
-    else cb(null, {article_id: articleId, comment_id: comment._id, non_northcoder_comment: comment2._id });
+    else {
+      let ids = {
+        article_id: articleId,
+        article_nocomments_id: articlesArray[1]._id,
+        comment_id: comment._id,
+        non_northcoder_comment: comment2._id
+      };
+      cb(null, ids);
+    }
   });
 }
 

@@ -62,6 +62,12 @@ describe('/api ROUTES', function () {
     });
   });
 
+  xdescribe('GET /api/topics/:topic_slug/articles', function () {
+    // returns 200 with an array of articles
+    // returns 200 and an empty array for valid topic with no articles
+    // returns 404 for slug that does not corespond to a topic
+  });
+
   describe('GET /api/articles', function () {
     it('will return 200 with an array of all the articles', function (done) {
       request(ROOT)
@@ -95,6 +101,16 @@ describe('/api ROUTES', function () {
           done();
         });
     });
+    it('returns 200 and an empty array for a valid article with no comments', function (done) {
+      request(ROOT)
+        .get(`/articles/${usefulIds.article_nocomments_id}/comments`)
+        .expect(200)
+        .end(function (err, res) {
+          if (err) throw err;
+          expect(res.body.comments).to.eql([]);
+          done();
+        });
+    });
     it('returns 404 (Not Found) for a nonexistent article id', function (done) {
       request(ROOT)
         .get(`/articles/${usefulIds.nonexistent_id}/comments`)
@@ -115,5 +131,6 @@ describe('/api ROUTES', function () {
           done();
         });
     });
+    // returns 200 and an empty array for a valid article with no comments
   });
 });
