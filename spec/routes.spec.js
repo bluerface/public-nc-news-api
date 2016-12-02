@@ -30,7 +30,7 @@ describe('/api ROUTES', function () {
   });
 
   describe('GET /api', function () {
-    it('GET /api', function () {
+    it('GET /api', function (done) {
       request(ROOT)
         .get('/')
         .expect(200)
@@ -38,12 +38,13 @@ describe('/api ROUTES', function () {
           if (err) throw err;
           expect(res.statusCode).to.equal(200);
           expect(res.body.status).to.equal('OK');
+          done();
         });
     });
   });
 
   describe('GET /api/topics', function () {
-    it('returns 200 with an array of the available topics', function () {
+    it('returns 200 with an array of the available topics', function (done) {
       request(ROOT)
         .get('/topics')
         .expect(200)
@@ -55,12 +56,13 @@ describe('/api ROUTES', function () {
             {title: 'Cooking', slug: 'cooking'},
             {title: 'Cats', slug: 'cats'}
           ]);
+          done();
         });
     });
   });
 
   describe('GET /api/articles', function () {
-    it('will return 200 with an array of all the articles', function () {
+    it('will return 200 with an array of all the articles', function (done) {
       request(ROOT)
         .get('/articles')
         .expect(200)
@@ -72,6 +74,24 @@ describe('/api ROUTES', function () {
             expect(article).to.have.ownProperty('body');
             expect(article).to.have.ownProperty('belongs_to');
           });
+          done();
+        });
+    });
+  });
+
+  describe('GET /api/articles/:article_id/comments', function () {
+    it('returns 200 with an array of the comments belonging to the article', function (done) {
+      request(ROOT)
+        .get(`/articles/${usefulIds.article_id}/comments`)
+        .expect(200)
+        .end(function (err, res) {
+          if (err) throw err;
+          expect(res.body.comments).to.be.an('array').with.lengthOf(2);
+          res.body.comments.forEach(function (comment) {
+            expect(comment).to.have.ownProperty('body');
+            expect(comment.belongs_to).to.eql(usefulIds.article_id.toString());
+          });
+          done();
         });
     });
   });

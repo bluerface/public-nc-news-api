@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const {getAllTopics, getAllArticles} = require('../controllers/controller');
+const {getAllTopics, getAllArticles, getArticleComments} = require('../controllers/controller');
 
 // route.get('/', function (req, res) {
 //   res.status(200).send(
@@ -28,5 +28,7 @@ router.get('/', function (req, res) {
 router.get('/topics', getAllTopics);
 
 router.get('/articles', getAllArticles);
+
+router.get('/articles/:article_id/comments', getArticleComments);
 
 module.exports = router;
