@@ -18,6 +18,10 @@ function getAllArticles (req, res, next) {
 
 function getArticleComments (req, res, next) {
   Articles.findById(req.params.article_id, function (err, articles) {
+    // console.log(err);
+    if (err && err.name === 'CastError') {
+      return res.status(400).json({reason: 'invalid article id'});
+    }
     if (err) return next(err);
     if (!articles) {
       return res.status(404).json({reason: 'article does not exist'});

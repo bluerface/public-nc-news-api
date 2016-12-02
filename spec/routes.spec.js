@@ -99,13 +99,21 @@ describe('/api ROUTES', function () {
       request(ROOT)
         .get(`/articles/${usefulIds.nonexistent_id}/comments`)
         .expect(404)
-        // .expect({reason: 'article does not exist'})
+        .expect({reason: 'article does not exist'})
         .end(function (err, res) {
           if (err) throw err;
           done();
         });
     });
-    // it returns 404 (not found) for a nonexistent article id
-    // it returns 400 (bad request) for a invalid article id
+    it('returns 400 (bad request) for a invalid article id', function (done) {
+      request(ROOT)
+        .get(`/articles/${usefulIds.invalid_id}/comments`)
+        .expect(400)
+        .expect({reason: 'invalid article id'})
+        .end(function (err, res) {
+          if (err) throw err;
+          done();
+        });
+    });
   });
 });
