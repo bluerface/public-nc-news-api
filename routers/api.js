@@ -1,9 +1,7 @@
 var express = require('express');
-var route = express.Router();
+var router = express.Router();
 
-route.get('/', function (req, res) {
-  res.status(200).json({status: 'OK'});
-})
+const {getAllTopics} = require('../controllers/controller');
 
 // route.get('/', function (req, res) {
 //   res.status(200).send(
@@ -23,6 +21,10 @@ route.get('/', function (req, res) {
 //   )
 // })
 
+router.get('/', function (req, res) {
+  res.status(200).json({status: 'OK'});
+});
 
+router.get('/topics', getAllTopics);
 
-module.exports = route;
+module.exports = router;

@@ -32,13 +32,30 @@ describe('/api ROUTES', function () {
   describe('GET /api', function () {
     it('GET /api', function () {
       request(ROOT)
-      .get('/')
-      .expect(200)
-      .end(function (err, res) {
-        if (err) throw err;
-        expect(res.statusCode).to.equal(200);
-        expect(res.body.status).to.equal('OK');
-      });
+        .get('/')
+        .expect(200)
+        .end(function (err, res) {
+          if (err) throw err;
+          expect(res.statusCode).to.equal(200);
+          expect(res.body.status).to.equal('OK');
+        });
+    });
+  });
+
+  describe('GET /api/topics', function () {
+    it('returns 200 with an array of the available topics', function () {
+      request(ROOT)
+        .get('/topics')
+        .expect(200)
+        .end(function (err, res) {
+          if (err) throw err;
+          expect(res.body.topics).to.be.an('array');
+          expect(res.body.topics).to.eql([
+            {title: 'Football', slug: 'football'},
+            {title: 'Cooking', slug: 'cooking'},
+            {title: 'Cats', slug: 'cats'}
+          ]);
+        });
     });
   });
 });
