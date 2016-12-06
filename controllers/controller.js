@@ -32,8 +32,18 @@ function getArticleComments (req, res, next) {
   });
 }
 
+function postComment (req, res, next) {
+  if (!req.body) {
+    console.log('no body');
+  } else if (typeof req.body.comment !== 'string') {
+    return res.status(400).json({reason: 'body must contain \'comment\' property which is a string'});
+  }
+  res.status(201).send();
+}
+
 module.exports = {
   getAllTopics,
   getAllArticles,
-  getArticleComments
+  getArticleComments,
+  postComment
 };

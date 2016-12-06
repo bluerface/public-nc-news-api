@@ -131,6 +131,47 @@ describe('/api ROUTES', function () {
           done();
         });
     });
-    // returns 200 and an empty array for a valid article with no comments
+  });
+
+  describe('POST /api/articles/:article_id/comments', function () {
+    it('should return 400 (bad request) if the request body does not have a "comment" property', function (done) {
+      request(ROOT)
+        .post(`/articles/${usefulIds.article_id}/comments`)
+        .send({'some': 'kind of nonesense json'})
+        .expect(400)
+        .expect({reason: 'body must contain \'comment\' property which is a string'})
+        .end((err, res) => {
+          if (err) throw err;
+          done();
+        });
+    });
+    it('should return 400 (bad request) if the "comment" property is not a string', function (done) {
+      request(ROOT)
+        .post(`/articles/${usefulIds.article_id}/comments`)
+        .send({comment: 5675607687584})
+        .expect(400)
+        .expect({reason: 'body must contain \'comment\' property which is a string'})
+        .end((err, res) => {
+          if (err) throw err;
+          done();
+        });
+    });
+    xit('should return 201 and the new comment object for valid requests', function (done) {
+      request(ROOT)
+      .post(`/articles/${usefulIds.article_id}/comments`)
+      .send({'comment': 'This is the new comment'})
+      .expect(201)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body._id).to.exist;
+        expect(res.body.body).to.equal('This is a new comment');
+        expect(res.body.belongs_to).to.equal(usefulIds.article_id);
+        expect(res.body.created_at).to.exist;
+        expect(res.body.votes).to.equal(0);
+        expect(res.body.created_by).to.equal('northcoder');
+
+        done();
+      });
+    });
   });
 });
