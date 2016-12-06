@@ -156,6 +156,16 @@ describe('/api ROUTES', function () {
           done();
         });
     });
+    it('should return 400 (bad request) if the request does not have a body', function (done) {
+      request(ROOT)
+        .post(`/articles/${usefulIds.article_id}/comments`)
+        .expect(400)
+        .expect({reason: 'request must have a json body'})
+        .end((err, res) => {
+          if (err) throw err;
+          done();
+        });
+    });
     xit('should return 201 and the new comment object for valid requests', function (done) {
       request(ROOT)
       .post(`/articles/${usefulIds.article_id}/comments`)

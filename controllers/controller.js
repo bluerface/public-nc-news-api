@@ -1,3 +1,5 @@
+var _ = require('underscore');
+
 var Topics = require('../models/topics');
 var Articles = require('../models/articles');
 var Comments = require('../models/comments');
@@ -33,8 +35,8 @@ function getArticleComments (req, res, next) {
 }
 
 function postComment (req, res, next) {
-  if (!req.body) {
-    console.log('no body');
+  if (_.isEmpty(req.body)) {
+    return res.status(400).json({reason: 'request must have a json body'});
   } else if (typeof req.body.comment !== 'string') {
     return res.status(400).json({reason: 'body must contain \'comment\' property which is a string'});
   }
