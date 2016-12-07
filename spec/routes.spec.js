@@ -134,6 +134,26 @@ describe('/api ROUTES', function () {
   });
 
   describe('POST /api/articles/:article_id/comments', function () {
+    it('should return 404 (not found) for a nonexistent article id', function (done) {
+      request(ROOT)
+        .post(`/articles/${usefulIds.nonexistent_id}/comments`)
+        .expect(400)
+        .expect({reason: 'request must have a json body'})
+        .end((err, res) => {
+          if (err) throw err;
+          done();
+        });
+    });
+    it('should return 400 (bad request) for an invalid article id', function (done) {
+      request(ROOT)
+        .post(`/articles/${usefulIds.invalid_id}/comments`)
+        .expect(400)
+        .expect({reason: 'invalid article id'})
+        .end(function (err, res) {
+          if (err) throw err;
+          done();
+        });
+    });
     it('should return 400 (bad request) if the request body does not have a "comment" property', function (done) {
       request(ROOT)
         .post(`/articles/${usefulIds.article_id}/comments`)
