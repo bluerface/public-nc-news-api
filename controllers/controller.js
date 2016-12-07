@@ -40,7 +40,12 @@ function postComment (req, res, next) {
   } else if (typeof req.body.comment !== 'string') {
     return res.status(400).json({reason: 'body must contain \'comment\' property which is a string'});
   }
-  res.status(201).send();
+
+  let comment = new Comments({body: req.body.comment, belongs_to: req.params.article_id});
+  comment.save((err, comment) => {
+    if (err) return next(err);
+    res.status(201).json(comment);
+  });
 }
 
 module.exports = {

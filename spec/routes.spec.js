@@ -186,7 +186,7 @@ describe('/api ROUTES', function () {
           done();
         });
     });
-    xit('should return 201 and the new comment object for valid requests', function (done) {
+    it('should return 201 and the new comment object for valid requests', function (done) {
       request(ROOT)
       .post(`/articles/${usefulIds.article_id}/comments`)
       .send({'comment': 'This is the new comment'})
@@ -194,8 +194,8 @@ describe('/api ROUTES', function () {
       .end((err, res) => {
         if (err) throw err;
         expect(res.body._id).to.exist;
-        expect(res.body.body).to.equal('This is a new comment');
-        expect(res.body.belongs_to).to.equal(usefulIds.article_id);
+        expect(res.body.body).to.equal('This is the new comment');
+        expect(res.body.belongs_to).to.equal(usefulIds.article_id.toString());
         expect(res.body.created_at).to.exist;
         expect(res.body.votes).to.equal(0);
         expect(res.body.created_by).to.equal('northcoder');
