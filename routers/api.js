@@ -1,7 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
-const {getAllTopics, getAllArticles, getArticleComments, postComment} = require('../controllers/controller');
+const {getAllTopics,
+  getAllArticles,
+  isValidArticle,
+  getArticleComments,
+  postComment} = require('../controllers/controller');
 
 // route.get('/', function (req, res) {
 //   res.status(200).send(
@@ -28,6 +32,8 @@ router.get('/', function (req, res) {
 router.get('/topics', getAllTopics);
 
 router.get('/articles', getAllArticles);
+
+router.use('/articles/:article_id/', isValidArticle);
 
 router.get('/articles/:article_id/comments', getArticleComments);
 

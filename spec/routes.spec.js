@@ -137,8 +137,8 @@ describe('/api ROUTES', function () {
     it('should return 404 (not found) for a nonexistent article id', function (done) {
       request(ROOT)
         .post(`/articles/${usefulIds.nonexistent_id}/comments`)
-        .expect(400)
-        .expect({reason: 'request must have a json body'})
+        .expect(404)
+        .expect({reason: 'article does not exist'})
         .end((err, res) => {
           if (err) throw err;
           done();
