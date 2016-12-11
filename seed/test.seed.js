@@ -9,7 +9,7 @@ const topics = [
 ];
 
 const articles = [
-  new models.Articles({title: 'Cats are great', body: 'something', belongs_to: 'cats'}),
+  new models.Articles({title: 'Cats are great', body: 'something', belongs_to: 'cats', created_by: 'northcoder'}),
   new models.Articles({title: 'Football is fun', body: 'something', belongs_to: 'football'})
 ];
 

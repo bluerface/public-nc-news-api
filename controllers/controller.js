@@ -19,12 +19,17 @@ function getAllArticles (req, res, next) {
 }
 
 function isValidArticle (req, res, next) {
-  Articles.findById(req.params.article_id, function (err, articles) {
+  Articles.findById(req.params.article_id, function (err, article) {
     if (err && err.name === 'CastError') { return res.status(400).json({reason: 'invalid article id'}); }
     if (err) return next(err);
-    if (!articles) { return res.status(404).json({reason: 'article does not exist'}); }
+    if (!article) { return res.status(404).json({reason: 'article does not exist'}); }
+    res.locals.article = article;
     next();
   });
+}
+
+function getArticle (req, res, next) {
+  res.status(200).send(res.locals.article);
 }
 
 function getArticleComments (req, res, next) {
@@ -52,6 +57,7 @@ module.exports = {
   getAllTopics,
   getAllArticles,
   isValidArticle,
+  getArticle,
   getArticleComments,
   postComment
 };

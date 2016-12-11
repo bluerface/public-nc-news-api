@@ -62,11 +62,11 @@ describe('/api ROUTES', function () {
     });
   });
 
-  xdescribe('GET /api/topics/:topic_slug/articles', function () {
+  // xdescribe('GET /api/topics/:topic_slug/articles', function () {
     // returns 200 with an array of articles
     // returns 200 and an empty array for valid topic with no articles
     // returns 404 for slug that does not corespond to a topic
-  });
+  // });
 
   describe('GET /api/articles', function () {
     it('will return 200 with an array of all the articles', function (done) {
@@ -81,6 +81,25 @@ describe('/api ROUTES', function () {
             expect(article).to.have.ownProperty('body');
             expect(article).to.have.ownProperty('belongs_to');
           });
+          done();
+        });
+    });
+  });
+
+  describe('GET /api/articles/:article_id', function () {
+    it('returns 200 with the article object', function (done) {
+      request(ROOT)
+        .get(`/articles/${usefulIds.article_id}`)
+        .expect(200)
+        .end(function (err, res) {
+          if (err) throw err;
+          expect(res.body._id).to.eql(usefulIds.article_id.toString());
+          expect(res.body.title).to.equal('Cats are great');
+          expect(res.body.body).to.equal('something');
+          expect(res.body.created_by).to.equal('northcoder');
+          expect(res.body.belongs_to).to.equal('cats');
+          expect(res.body.votes).to.equal(0);
+          expect(res.body.__v).to.equal(0);
           done();
         });
     });

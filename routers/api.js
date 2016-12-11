@@ -4,6 +4,7 @@ var router = express.Router();
 const {getAllTopics,
   getAllArticles,
   isValidArticle,
+  getArticle,
   getArticleComments,
   postComment} = require('../controllers/controller');
 
@@ -34,6 +35,8 @@ router.get('/topics', getAllTopics);
 router.get('/articles', getAllArticles);
 
 router.use('/articles/:article_id/', isValidArticle);
+
+router.get('/articles/:article_id/', getArticle);
 
 router.get('/articles/:article_id/comments', getArticleComments);
 
