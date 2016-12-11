@@ -3,6 +3,7 @@ if (!process.env.NODE_ENV) process.env.NODE_ENV = 'dev';
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var cors = require('cors');
 var app = express();
 var config = require('./config');
 var db = config.DB[process.env.NODE_ENV] || process.env.DB;
@@ -19,6 +20,9 @@ mongoose.connect(db, function (err) {
 });
 
 app.use(bodyParser.json());
+
+app.use(cors());
+
 app.use('/api', apiRouter);
 
 app.listen(PORT, function () {
