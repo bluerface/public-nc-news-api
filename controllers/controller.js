@@ -44,7 +44,7 @@ function postComment (req, res, next) {
   let comment = new Comments({body: req.body.comment, belongs_to: req.params.article_id});
   comment.save((err, comment) => {
     if (err) return next(err);
-    res.status(201).json(comment);
+    res.status(201).json({comment});
   });
 }
 

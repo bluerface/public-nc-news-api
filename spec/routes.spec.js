@@ -193,12 +193,12 @@ describe('/api ROUTES', function () {
       .expect(201)
       .end((err, res) => {
         if (err) throw err;
-        expect(res.body._id).to.exist;
-        expect(res.body.body).to.equal('This is the new comment');
-        expect(res.body.belongs_to).to.equal(usefulIds.article_id.toString());
-        expect(res.body.created_at).to.exist;
-        expect(res.body.votes).to.equal(0);
-        expect(res.body.created_by).to.equal('northcoder');
+        expect(res.body.comment._id).to.exist;
+        expect(res.body.comment.body).to.equal('This is the new comment');
+        expect(res.body.comment.belongs_to).to.equal(usefulIds.article_id.toString());
+        expect(res.body.comment.created_at).to.exist;
+        expect(res.body.comment.votes).to.equal(0);
+        expect(res.body.comment.created_by).to.equal('northcoder');
 
         done();
       });
