@@ -5,6 +5,7 @@ const {getAllTopics,
   getAllArticles,
   isValidArticle,
   getArticle,
+  voteArticle,
   getArticleComments,
   postComment} = require('../controllers/controller');
 
@@ -16,9 +17,10 @@ const {getAllTopics,
 // GET  /api/topics
 // GET  /api/topics/:topic_slug/articles
 // GET  /api/articles
+// GET  /api/articles/:article_id
+// PUT  /api/articles/:article_id?vote=up (/down)
 // GET  /api/articles/:article_id/comments
 // POST /api/articles/:article_id/comments
-// PUT  /api/articles/:article_id?vote=up (/down)
 // PUT  /api/comments/:comment_id?vote=up (/down)
 // DEL  /api/comments/:comment_id
 // GET  /api/users/:username
@@ -37,6 +39,8 @@ router.get('/articles', getAllArticles);
 router.use('/articles/:article_id/', isValidArticle);
 
 router.get('/articles/:article_id/', getArticle);
+
+router.put('/articles/:article_id/', voteArticle);
 
 router.get('/articles/:article_id/comments', getArticleComments);
 

@@ -207,20 +207,55 @@ describe('/api ROUTES', function () {
     });
     it('should return 201 and the new comment object for valid requests', function (done) {
       request(ROOT)
-      .post(`/articles/${usefulIds.article_id}/comments`)
-      .send({'comment': 'This is the new comment'})
-      .expect(201)
-      .end((err, res) => {
-        if (err) throw err;
-        expect(res.body.comment._id).to.exist;
-        expect(res.body.comment.body).to.equal('This is the new comment');
-        expect(res.body.comment.belongs_to).to.equal(usefulIds.article_id.toString());
-        expect(res.body.comment.created_at).to.exist;
-        expect(res.body.comment.votes).to.equal(0);
-        expect(res.body.comment.created_by).to.equal('northcoder');
+        .post(`/articles/${usefulIds.article_id}/comments`)
+        .send({'comment': 'This is the new comment'})
+        .expect(201)
+        .end((err, res) => {
+          if (err) throw err;
+          expect(res.body.comment._id).to.exist;
+          expect(res.body.comment.body).to.equal('This is the new comment');
+          expect(res.body.comment.belongs_to).to.equal(usefulIds.article_id.toString());
+          expect(res.body.comment.created_at).to.exist;
+          expect(res.body.comment.votes).to.equal(0);
+          expect(res.body.comment.created_by).to.equal('northcoder');
 
-        done();
-      });
+          done();
+        });
+    });
+  });
+
+  describe('PUT /api/articles/:article_id/?vote=up/down', function () {
+    it('returns 202 and the new article object for a successfull upvote', function (done) {
+      request(ROOT)
+        .put(`/articles/${usefulIds.article_id}/?vote=up`)
+        .expect(202)
+        .end((err, res) => {
+          if (err) throw err;
+          expect(res.body._id).to.eql(usefulIds.article_id.toString());
+          expect(res.body.title).to.equal('Cats are great');
+          expect(res.body.body).to.equal('something');
+          expect(res.body.created_by).to.equal('northcoder');
+          expect(res.body.belongs_to).to.equal('cats');
+          expect(res.body.votes).to.equal(1);
+          expect(res.body.__v).to.equal(0);
+          done();
+        });
+    });
+    it('returns 202 and the new article object for a successfull downvote', function (done) {
+      request(ROOT)
+        .put(`/articles/${usefulIds.article_id}/?vote=down`)
+        .expect(202)
+        .end((err, res) => {
+          if (err) throw err;
+          expect(res.body._id).to.eql(usefulIds.article_id.toString());
+          expect(res.body.title).to.equal('Cats are great');
+          expect(res.body.body).to.equal('something');
+          expect(res.body.created_by).to.equal('northcoder');
+          expect(res.body.belongs_to).to.equal('cats');
+          expect(res.body.votes).to.equal(0);
+          expect(res.body.__v).to.equal(0);
+          done();
+        });
     });
   });
 });

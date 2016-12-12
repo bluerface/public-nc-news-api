@@ -32,6 +32,18 @@ function getArticle (req, res, next) {
   res.status(200).send(res.locals.article);
 }
 
+function voteArticle (req, res, next) {
+  if (!req.query.vote) return next('vote query value not specified');
+  if (req.query.vote !== 'up' && req.query.vote !== 'down') return next('vote query must be up or down');
+  let val;
+  if (req.query.vote === 'up') { val = 1; }
+  if (req.query.vote === 'down') { val = -1; }
+  Articles.findByIdAndUpdate(req.params.article_id, {$inc: {'votes': val}}, {new: true}, (err, article) => {
+    if (err) return next(err);
+    res.status(202).send(article);
+  });
+}
+
 function getArticleComments (req, res, next) {
   Comments.find({belongs_to: req.params.article_id}, function (err, comments) {
     if (err) return next(err);
@@ -58,6 +70,7 @@ module.exports = {
   getAllArticles,
   isValidArticle,
   getArticle,
+  voteArticle,
   getArticleComments,
   postComment
 };
