@@ -7,7 +7,9 @@ const {getAllTopics,
   getArticle,
   voteArticle,
   getArticleComments,
-  postComment} = require('../controllers/controller');
+  postComment,
+  isValidComment,
+  voteComment} = require('../controllers/controller');
 
 // route.get('/', function (req, res) {
 //   res.status(200).send(
@@ -45,5 +47,9 @@ router.put('/articles/:article_id/', voteArticle);
 router.get('/articles/:article_id/comments', getArticleComments);
 
 router.post('/articles/:article_id/comments', postComment);
+
+router.use('/comments/:comment_id', isValidComment);
+
+router.put('/comments/:comment_id', voteComment);
 
 module.exports = router;

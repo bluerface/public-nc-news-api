@@ -11,6 +11,8 @@ function getAllTopics (req, res, next) {
   });
 }
 
+// articles
+
 function getAllArticles (req, res, next) {
   Articles.find({}, function (err, articles) {
     if (err) return next(err);
@@ -35,9 +37,8 @@ function getArticle (req, res, next) {
 function voteArticle (req, res, next) {
   if (!req.query.vote) return next('vote query value not specified');
   if (req.query.vote !== 'up' && req.query.vote !== 'down') return next('vote query must be up or down');
-  let val;
-  if (req.query.vote === 'up') { val = 1; }
-  if (req.query.vote === 'down') { val = -1; }
+  let val = req.query.vote === 'up' ? 1 : -1;
+
   Articles.findByIdAndUpdate(req.params.article_id, {$inc: {'votes': val}}, {new: true}, (err, article) => {
     if (err) return next(err);
     res.status(202).send(article);
@@ -65,6 +66,29 @@ function postComment (req, res, next) {
   });
 }
 
+// comments
+
+function isValidComment (req, res, next) {
+  Comments.findById(req.params.comment_id, function (err, comment) {
+    if (err && err.name === 'CastError') { return res.status(400).json({reason: 'invalid comment id'}); }
+    if (err) return next(err);
+    if (!comment) { return res.status(404).json({reason: 'comment does not exist'}); }
+    res.locals.comment = comment;
+    next();
+  });
+}
+
+function voteComment (req, res, next) {
+  if (!req.query.vote) return next('vote query value not specified');
+  if (req.query.vote !== 'up' && req.query.vote !== 'down') return next('vote query must be up or down');
+  let val = req.query.vote === 'up' ? 1 : -1;
+
+  Comments.findByIdAndUpdate(req.params.comment_id, {$inc: {'votes': val}}, {new: true}, (err, comment) => {
+    if (err) return next(err);
+    res.status(202).send({comment});
+  });
+}
+
 module.exports = {
   getAllTopics,
   getAllArticles,
@@ -72,5 +96,7 @@ module.exports = {
   getArticle,
   voteArticle,
   getArticleComments,
-  postComment
+  postComment,
+  isValidComment,
+  voteComment
 };

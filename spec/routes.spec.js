@@ -258,4 +258,39 @@ describe('/api ROUTES', function () {
         });
     });
   });
+
+  describe('PUT /api/comments/:comment_id/?vote=up/down', function () {
+    it('returns 202 and the updated comment object for a successfull upvote', function (done) {
+      request(ROOT)
+        .put(`/comments/${usefulIds.comment_id}/?vote=up`)
+        .expect(202)
+        .end((err, res) => {
+          if (err) throw err;
+          expect(res.body.comment._id).to.equal(usefulIds.comment_id.toString());
+          expect(res.body.comment.body).to.equal('this is a comment');
+          expect(res.body.comment.belongs_to).to.equal(usefulIds.article_id.toString());
+          expect(res.body.comment.created_by).to.equal('northcoder');
+          expect(res.body.comment.votes).to.equal(1);
+          expect(res.body.comment.created_at).to.exist;
+          expect(res.body.comment.__v).to.equal(0);
+          done();
+        });
+    });
+    it('returns 202 and the updated comment object for a successfull downvote', function (done) {
+      request(ROOT)
+        .put(`/comments/${usefulIds.comment_id}/?vote=down`)
+        .expect(202)
+        .end((err, res) => {
+          if (err) throw err;
+          expect(res.body.comment._id).to.equal(usefulIds.comment_id.toString());
+          expect(res.body.comment.body).to.equal('this is a comment');
+          expect(res.body.comment.belongs_to).to.equal(usefulIds.article_id.toString());
+          expect(res.body.comment.created_by).to.equal('northcoder');
+          expect(res.body.comment.votes).to.equal(0);
+          expect(res.body.comment.created_at).to.exist;
+          expect(res.body.comment.__v).to.equal(0);
+          done();
+        });
+    });
+  });
 });
