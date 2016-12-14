@@ -10,6 +10,7 @@ var db = config.DB[process.env.NODE_ENV] || process.env.DB;
 var PORT = config.PORT[process.env.NODE_ENV] || process.env.PORT;
 
 var apiRouter = require('./routers/api.js');
+var authentication = require('./controllers/authentication');
 
 mongoose.connect(db, function (err) {
   if (!err) {
@@ -24,6 +25,8 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use('/api', apiRouter);
+
+app.post('/signup', authentication.signup);
 
 app.listen(PORT, function () {
   console.log(`listening on port ${PORT}`);
