@@ -46,6 +46,11 @@ function signup (req, res, next) {
   });
 }
 
+function signin (req, res, next) {
+  res.send('hello dudes');
+}
+
 module.exports = {
-  signup
+  signup,
+  signin
 };
