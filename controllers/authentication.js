@@ -1,4 +1,13 @@
 const User = require('../models/users');
+const jwt = require('jwt-simple');
+const secret = require('../config').secret;
+
+function createUserToken (user) {
+  return jwt.encode({
+    sub: user.id,
+    iat: Date.now()
+  }, secret);
+}
 
 function signup (req, res, next) {
   // expect to get password, username and name
@@ -24,8 +33,14 @@ function signup (req, res, next) {
 
     newUser.save(function (err, user) {
       if (err) return next(err);
+
       res.status(201).json({
-        user
+        token: createUserToken(user),
+        user: {
+          username,
+          name,
+          avatar_url: user.avatar_url
+        }
       });
     });
   });
