@@ -1,3 +1,5 @@
+const User = require('../models/users');
+
 function signup (req, res, next) {
   // expect to get password, username and name
   // check whether user already exists
@@ -11,7 +13,22 @@ function signup (req, res, next) {
     return res.status(422).json({reason: 'body must include password, username and name properties'});
   }
 
-  res.send('hello');
+  User.findOne({username}, function (err, existingUser) {
+    if (err) return next(err);
+
+    if (existingUser) {
+      return res.status(422).json({reason: 'Username is in use'});
+    }
+
+    const newUser = new User({username, password, name});
+
+    newUser.save(function (err, user) {
+      if (err) return next(err);
+      res.status(201).json({
+        user
+      });
+    });
+  });
 }
 
 module.exports = {

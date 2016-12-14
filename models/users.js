@@ -14,7 +14,12 @@ var UserSchema = new Schema({
   avatar_url: {
     type: String,
     required: true,
-    lowercase: true
+    lowercase: true,
+    default: '#'
+  },
+  password: {
+    type: String,
+    required: true
   }
 });
 
