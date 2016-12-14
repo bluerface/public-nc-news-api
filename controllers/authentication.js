@@ -10,12 +10,6 @@ function createUserToken (user) {
 }
 
 function signup (req, res, next) {
-  // expect to get password, username and name
-  // check whether user already exists
-  // save new user to database
-    // hash & salt password before saving
-    // return user (insensitive only) & token
-
   const {password, username, name} = req.body;
 
   if (!password || !username || !name) {
@@ -24,13 +18,11 @@ function signup (req, res, next) {
 
   User.findOne({username}, function (err, existingUser) {
     if (err) return next(err);
-
     if (existingUser) {
       return res.status(422).json({reason: 'Username is in use'});
     }
 
     const newUser = new User({username, password, name});
-
     newUser.save(function (err, user) {
       if (err) return next(err);
 
@@ -47,7 +39,14 @@ function signup (req, res, next) {
 }
 
 function signin (req, res, next) {
-  res.send('hello dudes');
+  const user = req.user;
+  const {username, name, avatar_url} = req.user;
+  res.json({
+    token: createUserToken(user),
+    user: {
+      username, name, avatar_url
+    }
+  });
 }
 
 module.exports = {
