@@ -41,6 +41,7 @@ function addNorthcoderUser(done) {
   var userDoc = new models.Users(
     {
       username: 'northcoder',
+      password: 'password',
       name: 'Awesome Northcoder',
       avatar_url: 'https://avatars3.githubusercontent.com/u/6791502?v=3&s=200'
     }
