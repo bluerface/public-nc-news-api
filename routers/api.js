@@ -1,5 +1,7 @@
 var express = require('express');
+var passport = require('passport');
 var router = express.Router();
+require('../services/passport');
 
 const {getAllTopics,
   getAllArticles,
@@ -29,6 +31,10 @@ const {getAllTopics,
 // `
 //   )
 // })
+
+const requireAuth = passport.authenticate('jwt', { session: false });
+
+router.post('/*', requireAuth);
 
 router.get('/', function (req, res) {
   res.status(200).json({status: 'OK'});
