@@ -16,7 +16,7 @@ function signup (req, res, next) {
     return res.status(422).json({reason: 'body must include password, username and name properties'});
   }
 
-  User.findOne({username}, function (err, existingUser) {
+  User.findOne({username: username.toLowerCase()}, function (err, existingUser) {
     if (err) return next(err);
     if (existingUser) {
       return res.status(422).json({reason: 'Username is in use'});
@@ -41,7 +41,7 @@ function signup (req, res, next) {
 function signin (req, res, next) {
   const user = req.user;
   const {username, name, avatar_url} = req.user;
-  res.json({
+  res.status(202).json({
     token: createUserToken(user),
     user: {
       username, name, avatar_url
