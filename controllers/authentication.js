@@ -12,7 +12,7 @@ function createUserToken (user) {
 function signup (req, res, next) {
   const {password, username, name} = req.body;
 
-  if (!password || !username || !name) {
+  if (typeof password !== 'string' || typeof username !== 'string' || typeof name !== 'string') {
     return res.status(422).json({reason: 'body must include password, username and name properties'});
   }
 
