@@ -59,7 +59,13 @@ function postComment (req, res, next) {
     return res.status(400).json({reason: 'body must contain \'comment\' property which is a string'});
   }
 
-  let comment = new Comments({body: req.body.comment, belongs_to: req.params.article_id});
+  console.log(req.user);
+
+  let comment = new Comments({
+    body: req.body.comment,
+    belongs_to: req.params.article_id,
+    created_by: req.user.username
+  });
   comment.save((err, comment) => {
     if (err) return next(err);
     res.status(201).json({comment});
