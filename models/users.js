@@ -16,7 +16,7 @@ var UserSchema = new Schema({
     type: String,
     required: true,
     lowercase: true,
-    default: '#'
+    default: 'https://eliaslealblog.files.wordpress.com/2014/03/user-200.png'
   },
   password: {
     type: String,
