@@ -1,5 +1,7 @@
 var express = require('express');
+var passport = require('passport');
 var router = express.Router();
+require('../services/passport');
 
 const {getAllTopics,
   getAllArticles,
@@ -30,6 +32,8 @@ const {getAllTopics,
 //   )
 // })
 
+const requireAuth = passport.authenticate('jwt', { session: false });
+
 router.get('/', function (req, res) {
   res.status(200).json({status: 'OK'});
 });
@@ -46,7 +50,7 @@ router.put('/articles/:article_id/', voteArticle);
 
 router.get('/articles/:article_id/comments', getArticleComments);
 
-router.post('/articles/:article_id/comments', postComment);
+router.post('/articles/:article_id/comments', requireAuth, postComment);
 
 router.use('/comments/:comment_id', isValidComment);
 

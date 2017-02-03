@@ -16,7 +16,8 @@ const articles = [
 const user = new models.Users({
   username: 'northcoder',
   name: 'Awesome Northcoder',
-  avatar_url: 'https://avatars3.githubusercontent.com/u/6791502?v=3&s=200'
+  avatar_url: 'https://avatars3.githubusercontent.com/u/6791502?v=3&s=200',
+  password: 'northcoder'
 });
 
 function saveUser (cb) {

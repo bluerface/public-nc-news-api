@@ -10,6 +10,12 @@ var db = config.DB[process.env.NODE_ENV] || process.env.DB;
 var PORT = config.PORT[process.env.NODE_ENV] || process.env.PORT;
 
 var apiRouter = require('./routers/api.js');
+var authController = require('./controllers/authentication');
+
+const passport = require('passport');
+require('./services/passport');
+const requireSignin = passport.authenticate('local', {session: false});
+
 
 mongoose.connect(db, function (err) {
   if (!err) {
@@ -24,6 +30,9 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use('/api', apiRouter);
+
+app.post('/signup', authController.signup);
+app.post('/signin', requireSignin, authController.signin);
 
 app.listen(PORT, function () {
   console.log(`listening on port ${PORT}`);
