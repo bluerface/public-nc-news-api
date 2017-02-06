@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>API Routes</title>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .unfinished {
+        text-decoration: line-through;
+        color: grey;
+      }
+    </style>
+  </head>
+  <body>
+    The available routes are; <br />
+    <br />
+    <a href='/api'>
+      GET  /api  <br />
+    </a>
+    <a href='/api/topics'>
+      GET  /api/topics  <br />
+    </a>
+    <span class='unfinished'>
+      GET  /api/topics/:topic_slug/articles  <br />
+    </span>
+    <br />
+    <a href='/api/articles'>
+      GET  /api/articles  <br />
+    </a>
+    GET  /api/articles/:article_id  <br />
+    PUT  /api/articles/:article_id?vote=up (/down)  <br />
+    GET  /api/articles/:article_id/comments  <br />
+    POST /api/articles/:article_id/comments  <br />
+    <br />
+    PUT  /api/comments/:comment_id?vote=up (/down)  <br />
+    <span class='unfinished'>
+      DEL  /api/comments/:comment_id  <br />
+    </span>
+    <br />
+    <span class='unfinished'>
+      GET  /api/users/:username  <br />
+    </span>
+    <br />
+    POST /signup  <br />
+    POST /signin  <br />
+  </body>
+</html>

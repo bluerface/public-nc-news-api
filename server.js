@@ -4,6 +4,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var cors = require('cors');
+var path = require('path');
 var app = express();
 var config = require('./config');
 var db = config.DB[process.env.NODE_ENV] || process.env.DB;
@@ -28,6 +29,10 @@ mongoose.connect(db, function (err) {
 app.use(bodyParser.json());
 
 app.use(cors());
+
+app.get('/', function (req, res) {
+  res.status(200).sendFile(path.join(__dirname, 'index.html'))
+})
 
 app.use('/api', apiRouter);
 
