@@ -51,7 +51,7 @@ describe.only('Authentication', function () {
           expect(res.body.token).to.be.a('string');
           expect(res.body.user.username).to.equal(newUser.username);
           expect(res.body.user.name).to.equal(newUser.name);
-          expect(res.body.user.avatar_url).to.equal('#');
+          expect(res.body.user.avatar_url).to.equal('https://eliaslealblog.files.wordpress.com/2014/03/user-200.png');
           done();
         });
     });
@@ -89,7 +89,7 @@ describe.only('Authentication', function () {
           expect(res.body.comment.belongs_to).to.equal(usefulIds.article_id.toString());
           expect(res.body.comment.created_at).to.exist;
           expect(res.body.comment.votes).to.equal(0);
-          expect(res.body.comment.created_by).to.equal('northcoder');
+          expect(res.body.comment.created_by).to.equal(newUser.username);
           done();
         });
     });
@@ -113,7 +113,7 @@ describe.only('Authentication', function () {
           expect(res.body.token).to.be.a('string');
           expect(res.body.user.username).to.equal(newUser.username);
           expect(res.body.user.name).to.equal(newUser.name);
-          expect(res.body.user.avatar_url).to.equal('#');
+          expect(res.body.user.avatar_url).to.equal('https://eliaslealblog.files.wordpress.com/2014/03/user-200.png');
           done();
         });
     });
@@ -130,7 +130,7 @@ describe.only('Authentication', function () {
           expect(res.body.comment.belongs_to).to.equal(usefulIds.article_id.toString());
           expect(res.body.comment.created_at).to.exist;
           expect(res.body.comment.votes).to.equal(0);
-          expect(res.body.comment.created_by).to.equal('northcoder');
+          expect(res.body.comment.created_by).to.equal(newUser.username);
           done();
         });
     });
