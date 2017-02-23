@@ -37,7 +37,7 @@ mongoose.connect(DBs.dev, function (err) {
   }
 });
 
-function addNorthcoderUser(done) {
+function addNorthcoderUser (done) {
   var userDoc = new models.Users(
     {
       username: 'northcoder',
@@ -54,8 +54,8 @@ function addNorthcoderUser(done) {
   });
 }
 
-function addUsers(done) {
-  logger.info('adding users')
+function addUsers (done) {
+  logger.info('adding users');
   async.eachSeries(userData, function (user, cb) {
     var userDoc = new models.Users(user);
     userDoc.save(function (err) {
@@ -66,12 +66,12 @@ function addUsers(done) {
     });
   }, function (error) {
     if (error) return done(error);
-    return done(null)
-  })
+    return done(null);
+  });
 }
 
-function addTopics(done) {
-  logger.info('adding topics')
+function addTopics (done) {
+  logger.info('adding topics');
   var topicDocs = [];
   async.eachSeries(['Football', 'Cooking', 'Coding'], function (topic, cb) {
     var topicObj = {
@@ -90,11 +90,11 @@ function addTopics(done) {
     });
   }, function (error) {
     if (error) return done(error);
-    return done(null, topicDocs)
-  })
+    return done(null, topicDocs);
+  });
 }
 
-function addArticles(topicDocs, done) {
+function addArticles (topicDocs, done) {
   logger.info('adding articles');
   // will be a big array of strings
   var docIds = [];
@@ -131,15 +131,14 @@ function addArticles(topicDocs, done) {
     }, function (error) {
       if (error) return cb(error);
       return cb(null, docIds);
-    })
-
+    });
   }, function (error) {
     if (error) return done(error);
-    return done(null, docIds)
-  })
+    return done(null, docIds);
+  });
 }
 
-function addComments(docIds, done) {
+function addComments (docIds, done) {
   logger.info('adding comments');
   async.eachSeries(docIds, function (id, cb) {
     async.eachSeries(_.range(_.sample(_.range(5, 11))), function (x, cbTwo) {
@@ -153,26 +152,25 @@ function addComments(docIds, done) {
       var commentDoc = new models.Comments(comment);
       commentDoc.save(function (err) {
         if (err) {
-          return cb(err)
+          return cb(err);
         }
         return cbTwo();
-      })
+      });
     }, function (error) {
       if (error) return done(error);
       return cb();
-    })
-
+    });
   }, function (err) {
     if (err) return done(err);
-    return done()
+    return done();
   });
 }
 
-function getRandomStamp() {
-  return new Date (
-    moment().subtract(_.sample(_.range(1,7)), 'days')
-    .subtract(_.sample(_.range(1,24)), 'hours')
-    .subtract(_.sample(_.range(1,60)), 'minutes')
+function getRandomStamp () {
+  return new Date(
+    moment().subtract(_.sample(_.range(1, 7)), 'days')
+    .subtract(_.sample(_.range(1, 24)), 'hours')
+    .subtract(_.sample(_.range(1, 60)), 'minutes')
     .format()
-  ).getTime()
+  ).getTime();
 }

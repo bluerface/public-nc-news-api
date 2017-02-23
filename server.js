@@ -17,7 +17,6 @@ const passport = require('passport');
 require('./services/passport');
 const requireSignin = passport.authenticate('local', {session: false});
 
-
 mongoose.connect(db, function (err) {
   if (!err) {
     console.log(`connected to the Database: ${db}`);
@@ -31,8 +30,8 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/', function (req, res) {
-  res.status(200).sendFile(path.join(__dirname, 'index.html'))
-})
+  res.status(200).sendFile(path.join(__dirname, 'index.html'));
+});
 
 app.use('/api', apiRouter);
 

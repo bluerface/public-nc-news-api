@@ -1,3 +1,4 @@
+/* eslint-disable */
 var footballArticles = [
   {
     title: "What does Jose Mourinho's handwriting say about his personality?",
