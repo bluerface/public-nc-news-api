@@ -10,8 +10,9 @@ const config = require('../config');
 const saveTestData = require('../seed/test.seed');
 const ROOT = `http://localhost:${config.PORT[process.env.NODE_ENV]}/api`;
 
-describe('/api ROUTES', function () {
+describe.only('/api ROUTES', function () {
   let usefulIds;
+  let token;
   before(function (done) {
     mongoose.connection.once('connected', function () {
       mongoose.connection.db.dropDatabase();
@@ -21,14 +22,22 @@ describe('/api ROUTES', function () {
       usefulIds = ids;
       usefulIds.nonexistent_id = '584191edb8b7b347f5a8627b';
       usefulIds.invalid_id = '584191edb8b7b347f5a8627bxxxxxx';
-      // maybe add an invalid id and a nonexistent/incorrect id
-      done();
+      // add an invalid id and a nonexistent/incorrect id
+      request(ROOT.slice(0, -4))
+        .post('/signin')
+        .send({username: 'northcoder', password: 'password'})
+        .end((err, res) => {
+          if (err) console.log(err);
+          token = res.body.token;
+          done();
+        });
     });
   });
 
   after(function (done) {
-    mongoose.connection.db.dropDatabase();
-    done();
+    mongoose.connection.db.dropDatabase(() => {
+      done();
+    });
   });
 
   describe('GET /api', function () {
@@ -170,6 +179,7 @@ describe('/api ROUTES', function () {
     it('should return 400 (bad request) if the request body does not have a "comment" property', function (done) {
       request(ROOT)
         .post(`/articles/${usefulIds.article_id}/comments`)
+        .set('authorisation', token)
         .send({'some': 'kind of nonesense json'})
         .expect(400)
         .expect({reason: 'body must contain \'comment\' property which is a string'})
@@ -181,6 +191,7 @@ describe('/api ROUTES', function () {
     it('should return 400 (bad request) if the "comment" property is not a string', function (done) {
       request(ROOT)
         .post(`/articles/${usefulIds.article_id}/comments`)
+        .set('authorisation', token)
         .send({comment: 5675607687584})
         .expect(400)
         .expect({reason: 'body must contain \'comment\' property which is a string'})
@@ -192,6 +203,7 @@ describe('/api ROUTES', function () {
     it('should return 400 (bad request) if the request does not have a body', function (done) {
       request(ROOT)
         .post(`/articles/${usefulIds.article_id}/comments`)
+        .set('authorisation', token)
         .expect(400)
         .expect({reason: 'request must have a json body'})
         .end((err, res) => {
@@ -202,6 +214,7 @@ describe('/api ROUTES', function () {
     it('should return 201 and the new comment object for valid requests', function (done) {
       request(ROOT)
         .post(`/articles/${usefulIds.article_id}/comments`)
+        .set('authorisation', token)
         .send({'comment': 'This is the new comment'})
         .expect(201)
         .end((err, res) => {

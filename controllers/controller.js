@@ -59,8 +59,6 @@ function postComment (req, res, next) {
     return res.status(400).json({reason: 'body must contain \'comment\' property which is a string'});
   }
 
-  console.log(req.user);
-
   let comment = new Comments({
     body: req.body.comment,
     belongs_to: req.params.article_id,

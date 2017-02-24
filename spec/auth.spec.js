@@ -16,9 +16,8 @@ const newUser = {
   password: 'Ilovecats'
 };
 
-let token;
-
-describe.only('Authentication', function () {
+describe('Authentication', function () {
+  let token;
   let usefulIds;
   before(function (done) {
     mongoose.connection.once('connected', function () {
